@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd2439a4ca0a4b4c8bc85890283568f, type: 3}
+  m_Name: LightGround
+  m_EditorClassIdentifier: 
+  _groundUp: {fileID: 11400000, guid: cc9f0d9e275ae7b4c937805ac074c9dc, type: 2}
+  _groundMiddle: {fileID: 11400000, guid: 3cf8d49e59eb9254cb8f23bed6a8c03a, type: 2}
+  _groundDown: {fileID: 11400000, guid: d496e7f6acbd16c4fb3a0df861937218, type: 2}
