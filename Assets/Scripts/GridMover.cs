@@ -11,6 +11,7 @@ public class GridMover : MonoBehaviour
     [SerializeField] public GameController _gameController;
 
     public int Lenght => _lenght;
+
     public event UnityAction Moved;
     public event UnityAction Inited;
   

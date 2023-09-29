@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class TilemapGenerator : MonoBehaviour
 {
-    [SerializeField] private Camera _camera;
+    [SerializeField] private ScreenBound _bound;
     [SerializeField] private GameController _gameController;
     [SerializeField] private GridMover _gridMover;
     [SerializeField] private TriggerTilemap _trigger;
@@ -24,21 +24,11 @@ public class TilemapGenerator : MonoBehaviour
     private Grid _grid;
     private int _extraWidth;
 
-    private float _minY;
-    private float _maxY;
-    private float _minX;
-    private float _maxX;
-
     private void Start()
     {
         _grid = _gridMover.GetComponent<Grid>();
         _triggerTilemap = _trigger.GetComponent<Tilemap>();
         _extraWidth = _gridMover.Lenght;
-        
-        _minY = -_camera.orthographicSize;
-        _maxY = _camera.orthographicSize;
-        _minX = -_camera.orthographicSize * _camera.aspect;
-        _maxX = _camera.orthographicSize * _camera.aspect;
     }
 
     private void OnEnable()
@@ -60,9 +50,9 @@ public class TilemapGenerator : MonoBehaviour
         _tilemap.ClearAllTiles();
         _triggerTilemap.ClearAllTiles();
 
-        int groundWidth = WorldToCell(_maxX + _extraWidth + 1, 0).x - WorldToCell(_minX, 0).x;
+        int groundWidth = WorldToCell(_bound.MaxX + _extraWidth + 1, 0).x - WorldToCell(_bound.MinX, 0).x;
 
-        DrawGround(WorldToCell(_minX, _minY), groundWidth, _groundLevel);
+        DrawGround(WorldToCell(_bound.MinX, _bound.MinY), groundWidth, _groundLevel);
     }
 
     private void OnTriggerEntered(Vector3 center)
@@ -72,15 +62,15 @@ public class TilemapGenerator : MonoBehaviour
 
     private void OnGridMoved()
     {
-        int groundWidth = WorldToCell(_maxX + _extraWidth + 1, 0).x - WorldToCell(_maxX, 0).x;
+        int groundWidth = WorldToCell(_bound.MaxX + _extraWidth + 1, 0).x - WorldToCell(_bound.MaxX, 0).x;
         int minLenghtUpTube = 3;
-        int upBoundY = WorldToCell(0, _maxY).y + 1;
-        int groundY = WorldToCell(0, _minY).y + _groundLevel;
+        int upBoundY = WorldToCell(0, _bound.MaxY).y + 1;
+        int groundY = WorldToCell(0, _bound.MinY).y + _groundLevel;
 
-        BoxClear(_tilemap, WorldToCell(_minX, _minY) - new Vector3Int(groundWidth, 0, 0), groundWidth, upBoundY - WorldToCell(0, _minY).y);
+        BoxClear(_tilemap, WorldToCell(_bound.MinX, _bound.MinY) - new Vector3Int(groundWidth, 0, 0), groundWidth, upBoundY - WorldToCell(0, _bound.MinY).y);
 
-        DrawGround(WorldToCell(_maxX, _minY), groundWidth, _groundLevel);
-        DrawBarrier(WorldToCell(_maxX, _minY) + new Vector3Int(_tubeSpawnOffsetX, _groundLevel, 0), minLenghtUpTube, (upBoundY - groundY) - _spaceHeight - minLenghtUpTube + 1, upBoundY, _spaceHeight);
+        DrawGround(WorldToCell(_bound.MaxX, _bound.MinY), groundWidth, _groundLevel);
+        DrawBarrier(WorldToCell(_bound.MaxX, _bound.MinY) + new Vector3Int(_tubeSpawnOffsetX, _groundLevel, 0), minLenghtUpTube, (upBoundY - groundY) - _spaceHeight - minLenghtUpTube + 1, upBoundY, _spaceHeight);
     }
 
     private Vector3Int WorldToCell(float x, float y, float z = 0)

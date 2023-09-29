@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _jumpForce;
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _maxAngle;
     [SerializeField] private float _angleForce;
     [SerializeField] private GameController _gameController;
+    [SerializeField] private ScreenBound _bound;
 
     private Rigidbody2D _playerRigidbody;
     private Transform _transform;
@@ -55,9 +57,14 @@ public class Player : MonoBehaviour
             Jump();
         }
 
-        if (_isAwake)
+        if (_isAwake == true)
         {
             Rotate(-_angleForce * Time.deltaTime);
+
+            if (_transform.position.y >= _bound.MaxY)
+            {
+                _transform.position = new Vector2(_transform.position.x, _bound.MaxY);
+            }
         }
     }
 
@@ -92,7 +99,7 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if (_isAlive)
+        if (_isAlive == true)
         {
             if (_isAwake == false)
             {

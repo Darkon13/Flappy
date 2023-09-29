@@ -31,5 +31,6 @@ public class Score : MonoBehaviour
     private void OnGameStarted()
     {
         Points = 0;
+        Changed?.Invoke();
     }
 }
